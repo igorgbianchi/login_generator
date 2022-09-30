@@ -128,5 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# text files
+# input/output files
 *.txt
+*.json

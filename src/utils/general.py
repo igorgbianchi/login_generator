@@ -1,7 +1,7 @@
-import json
 import logging
-from typing import Dict, List, Set
+from typing import List, Set
 
+import models
 
 logger = logging.getLogger(__name__)
 
@@ -31,9 +31,9 @@ def read_names(file_name: str) -> List[str]:
         raise
 
 
-def write_on_file(file_name: str, data: Dict[str, str]) -> None:
-    with open(file_name, "w") as f:
-        json.dump(data, f)
+def write_on_file(filepath: str, output: models.LoginGeneratorOutput) -> None:
+    with open(f"{filepath}.json", "w") as f:
+        f.write(output.json())
 
 
 def combine(words: List[str], logins: Set[str]) -> str:
@@ -58,14 +58,16 @@ def combine(words: List[str], logins: Set[str]) -> str:
     raise AlreadyUsedError(words)
 
 
-def combine_all(normalized_names: List[str]) -> Dict[str, str]:
+def combine_all(
+    normalized_names: List[models.NormalizationOutput],
+) -> models.LoginGeneratorOutput:
     logins: Set[str] = set()
-    output = {}
+    output = models.LoginGeneratorOutput()
     for n in normalized_names:
         try:
-            login = combine(n.split(" "), logins)
+            login = combine(n.normalized.split(" "), logins)
             logins.add(login)
-            output[n] = login
+            output.data.append(models.Login(name=n.original, username=login))
         except AlreadyUsedError as e:
             logger.warning(str(e))
 

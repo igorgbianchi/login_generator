@@ -14,8 +14,8 @@ from utils.nlp import NLP
 @click.option(
     "--output-filepath",
     "-o",
-    default="output.json",
-    help="JSON filepath to write the generated logins.",
+    default="output",
+    help="Filepath to write the generated logins.",
 )
 @click.option(
     "--log-level",
@@ -28,8 +28,9 @@ def generate_logins(input_filepath: str, output_filepath: str, log_level: str) -
     logger = general_utils.get_logger(log_level)
     logger.info("Program started.")
     names = general_utils.read_names(input_filepath)
+    # TODO: get logger from get_logger(__name__)
     nlp = NLP(logger=logger)
-    normalized_names = [nlp.normalize(name) for name in names]
+    normalized_names = nlp.normalize_many(names)
     logger.info("Names normalized.")
     output = general_utils.combine_all(normalized_names)
     logger.info("Logins generated.")

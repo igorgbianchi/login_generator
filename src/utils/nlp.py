@@ -1,8 +1,11 @@
 import unicodedata
 from logging import Logger
+from typing import List
 
 import nltk
 from nltk.corpus import stopwords
+
+from models import NormalizationOutput
 
 
 class NLP:
@@ -31,3 +34,9 @@ class NLP:
         normalized_text = normalized_text.upper().strip()
 
         return normalized_text
+
+    def normalize_many(self, data: List[str]) -> List[NormalizationOutput]:
+        return [
+            NormalizationOutput(original=text, normalized=self.normalize(text))
+            for text in data
+        ]
