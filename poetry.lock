@@ -300,7 +300,7 @@ python-versions = ">=3.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "3.9.4"
-content-hash = "e9aad704ef17a5c9b582fea92b6045b6c394137b2f1f943475c91480c53d871b"
+content-hash = "672ff6ad8dbc25f21455c509ea0040583ebcb8e9eb51029044921da7e79dee3b"
 
 [metadata.files]
 attrs = []

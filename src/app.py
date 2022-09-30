@@ -1,34 +1,41 @@
-import logging
-import os
-from typing import Set
+import click
 
-from utils.general import combine, read_names, write_on_file, AlreadyUsedError
+from utils import general as general_utils
 from utils.nlp import NLP
 
-file_name = "Massa de Dados.txt"
 
-logging.basicConfig(
-    format="%(asctime)s - %(levelname)s - %(message)s", level=logging.INFO
+@click.command()
+@click.option(
+    "--input-filepath",
+    "-i",
+    default="Massa de Dados.txt",
+    help="Names' filepath to generate logins. Must be '.txt' extension.",
 )
-logger = logging.getLogger(__name__)
-logger.setLevel(os.getenv("LOG_LEVEL", "INFO"))
-
-
-if __name__ == "__main__":
+@click.option(
+    "--output-filepath",
+    "-o",
+    default="output.json",
+    help="JSON filepath to write the generated logins.",
+)
+@click.option(
+    "--log-level",
+    "-l",
+    default="INFO",
+    type=click.Choice(["DEBUG", "INFO", "WARNING", "ERROR"]),
+    help="Set program's log level.",
+)
+def generate_logins(input_filepath: str, output_filepath: str, log_level: str) -> None:
+    logger = general_utils.get_logger(log_level)
     logger.info("Program started.")
-    names = read_names(file_name)
+    names = general_utils.read_names(input_filepath)
     nlp = NLP(logger=logger)
     normalized_names = [nlp.normalize(name) for name in names]
     logger.info("Names normalized.")
-    logins: Set[str] = set()
-    output = []
-    for n in normalized_names:
-        try:
-            login = combine(n.split(" "), logins)
-            logins.add(login)
-            output.append(f"{n} | {login}\n")
-        except AlreadyUsedError as e:
-            logger.warning(str(e))
+    output = general_utils.combine_all(normalized_names)
     logger.info("Logins generated.")
-    write_on_file("output.txt", output)
+    general_utils.write_on_file(output_filepath, output)
     logger.info("Program finished.")
+
+
+if __name__ == "__main__":
+    generate_logins()
