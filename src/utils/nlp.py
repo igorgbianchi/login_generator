@@ -1,5 +1,5 @@
 import unicodedata
-from logging import Logger
+from logging import getLogger
 from typing import List
 
 import nltk
@@ -8,8 +8,11 @@ from nltk.corpus import stopwords
 from models import NormalizationOutput
 
 
+logger = getLogger(__name__)
+
+
 class NLP:
-    def __init__(self, logger: Logger) -> None:
+    def __init__(self) -> None:
         nltk.download("stopwords")
         nltk.download("punkt")
         self.stop_words = set(stopwords.words("portuguese"))

@@ -28,14 +28,13 @@ def generate_logins(input_filepath: str, output_filepath: str, log_level: str) -
     logger = general_utils.get_logger(log_level)
     logger.info("Program started.")
     names = general_utils.read_names(input_filepath)
-    # TODO: get logger from get_logger(__name__)
-    nlp = NLP(logger=logger)
+    nlp = NLP()
     normalized_names = nlp.normalize_many(names)
     logger.info("Names normalized.")
     output = general_utils.combine_all(normalized_names)
-    logger.info("Logins generated.")
+    logger.info(f"{len(output.data)} logins generated.")
     general_utils.write_on_file(output_filepath, output)
-    logger.info("Program finished.")
+    logger.info("Saved on JSON file. Program finished.")
 
 
 if __name__ == "__main__":
