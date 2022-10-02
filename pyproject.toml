@@ -16,6 +16,11 @@ black = "^22.8.0"
 mypy = "^0.981"
 pytest = "^7.1.3"
 
+[tool.poetry.group.dev.dependencies]
+pydantic-factories = "^1.7.1"
+pytest-cov = "^4.0.0"
+pytest-mock = "^3.9.0"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"

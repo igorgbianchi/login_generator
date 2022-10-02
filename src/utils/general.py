@@ -100,12 +100,3 @@ def combine_all(
             logger.warning(str(e))
 
     return output
-
-
-def get_logger(log_level: str) -> logging.Logger:
-    logging.basicConfig(
-        format="%(asctime)s - %(levelname)s - %(message)s", level=log_level
-    )
-    logger = logging.getLogger(__name__)
-
-    return logger

@@ -1,7 +1,18 @@
+import logging
+
 import click
 
 from utils import general as general_utils
 from utils.nlp import NLP
+
+
+def get_logger(log_level: str) -> logging.Logger:
+    logging.basicConfig(
+        format="%(asctime)s - %(levelname)s - %(message)s", level=log_level
+    )
+    logger = logging.getLogger(__name__)
+
+    return logger
 
 
 @click.command()
@@ -25,7 +36,7 @@ from utils.nlp import NLP
     help="Set program's log level.",
 )
 def generate_logins(input_filepath: str, output_filepath: str, log_level: str) -> None:
-    logger = general_utils.get_logger(log_level)
+    logger = get_logger(log_level)
     logger.info("Program started.")
     names = general_utils.read_names(input_filepath)
     nlp = NLP()
