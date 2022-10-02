@@ -2,7 +2,59 @@
 
 ## Description
 
+This is a project to generate usernames from a names list, combining the first name and the last names. It accepts as input a `.txt` file like below:
+```txt
+João Silva
+Renato Gaúcho
+Joel Santana
+Silvana Almeida
+Sílvio de Almeida
+Luis Felipe Scolari
+Abel Ferreira
+Edson Arantes do Nascimento
+```
 
+Input file must be `ISO-8859-1` (latin characters) encoded. 
+
+The output will be a `.json` file like this:
+```json
+{
+    "data": [
+        {
+            "name": "Jo\u00e3o Silva",
+            "username": "JOAOSIL"
+        },
+        {
+            "name": "Renato Ga\u00facho",
+            "username": "RENAGAU"
+        },
+        {
+            "name": "Joel Santana",
+            "username": "JOELSAN"
+        },
+        {
+            "name": "Silvana Almeida",
+            "username": "SILVALM"
+        },
+        {
+            "name": "S\u00edlvio de Almeida",
+            "username": "ALMSILV"
+        },
+        {
+            "name": "Luis Felipe Scolari",
+            "username": "LUISSCO"
+        },
+        {
+            "name": "Abel Ferreira",
+            "username": "ABELFER"
+        },
+        {
+            "name": "Edson Arantes do Nascimento",
+            "username": "EDSONAS"
+        }
+    ]
+}
+```
 
 ## Running
 
@@ -27,13 +79,19 @@ Then, install the python version used in this repo and install the requirements 
 pyenv install 3.9.4
 pyenv local 3.9.4
 poetry install
-```
-
-Run
-
-```
 poetry shell
+```
+
+**RUN**
+
+```
 python src/app.py -i <INPUT_FILE_PATH> -o <OUTPUT_FILE_PATH> -l <LOG_LEVEL>
+```
+
+**TESTS**
+
+```sh
+pytest --cov=src  --cov-report term-missing tests/ -s -v
 ```
 
 ### Running in Docker container
