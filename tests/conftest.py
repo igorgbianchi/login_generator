@@ -28,7 +28,7 @@ def names():
 @pytest.fixture(scope="module")
 def input_file(names):
     file_path = "/tmp/input.txt"
-    with open(file_path, "w", encoding="latin-1") as f:
+    with open(file_path, "w", encoding="ISO-8859-1") as f:
         f.write("\n".join(names))
 
     return file_path

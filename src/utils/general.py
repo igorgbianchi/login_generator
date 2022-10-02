@@ -23,7 +23,7 @@ def read_names(file_name: str) -> List[str]:
         raise
     try:
         logger.debug("Reading text file.")
-        with open(file_name, "r", encoding="latin-1") as f:
+        with open(file_name, "r", encoding="ISO-8859-1") as f:
             names = f.read().split("\n")
         logger.debug("Succesfully reading.")
         return names
@@ -33,7 +33,7 @@ def read_names(file_name: str) -> List[str]:
 
 
 def write_on_file(filepath: str, output: models.LoginGeneratorOutput) -> None:
-    with open(f"{filepath}.json", "w") as f:
+    with open(f"{filepath}.json", "w", encoding="ISO-8859-1") as f:
         f.write(output.json())
 
 
