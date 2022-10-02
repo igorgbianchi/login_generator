@@ -1,5 +1,6 @@
+import itertools
 import logging
-from typing import List, Set
+from typing import List, Optional, Set
 
 import models
 
@@ -36,15 +37,29 @@ def write_on_file(filepath: str, output: models.LoginGeneratorOutput) -> None:
         f.write(output.json())
 
 
-def combine(words: List[str], logins: Set[str]) -> str:
-    logger.debug(f"Name to generate login: {' '.join(words)}")
+def combine_2_2_3_words(words: List[str], logins: Set[str]) -> Optional[str]:
+    _2_words = {word[:2] for word in words}
+    _3_words = {word[:3]: word[:2] for word in words}
+
+    for possible_3_word in _3_words:
+        filtered_2_words = set(_2_words)
+        filtered_2_words.remove(_3_words[possible_3_word])
+        possible_combinations = itertools.permutations(
+            list(filtered_2_words) + [possible_3_word], r=3
+        )
+        for combination in possible_combinations:
+            if (possible_login := "".join(combination)) not in logins:
+                return possible_login
+
+    return None
+
+
+def combine_3_4_words(words: List[str], logins: Set[str]) -> Optional[str]:
     _4_words = [word[:4] for word in words]
     _3_words = {word[:4]: word[:3] for word in reversed(words)}
 
     for possible_4_word in _4_words:
         for possible_3_word in _3_words.values():
-            logger.debug(f"Possible word with 3 characters: {possible_3_word}")
-            logger.debug(f"Possible word with 4 characters: {possible_4_word}")
             possible_login = possible_4_word + possible_3_word
             if possible_3_word == _3_words[possible_4_word]:
                 continue
@@ -54,6 +69,19 @@ def combine(words: List[str], logins: Set[str]) -> str:
                 continue
 
             return possible_login
+
+    return None
+
+
+def combine(words: List[str], logins: Set[str]) -> str:
+    logger.debug(f"Name to generate login: {' '.join(words)}")
+    logger.debug("Trying to generate login using words with 3 and 4 characters.")
+    if (possible_login := combine_3_4_words(words, logins)) is not None:
+        return possible_login
+
+    logger.debug("Trying to generate login using words with 2 and 3 characters.")
+    if (possible_login := combine_2_2_3_words(words, logins)) is not None:
+        return possible_login
 
     raise AlreadyUsedError(words)
 
