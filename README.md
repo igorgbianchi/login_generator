@@ -88,6 +88,12 @@ poetry shell
 python src/app.py -i <INPUT_FILE_PATH> -o <OUTPUT_FILE_PATH> -l <LOG_LEVEL>
 ```
 
+#### Example
+
+```
+python src/app.py -i example.txt -o output -l DEBUG
+```
+
 **TESTS**
 
 ```sh
@@ -102,5 +108,10 @@ cp <INPUT_FILE_NAME> data/<INPUT_FILE_NAME>
 docker build . -f Dockerfile login_generator
 docker run -v $(pwd)/data:/data login_generator -i "/data/<INPUT_FILE_NAME>" -o "/data/output"
 ```
-
 The output file will be in `/data` on your active directory. 
+
+#### Example
+
+```
+docker run -v $(pwd)/data:/data login_generator -i "/data/example.txt" -o "/data/output" -l DEBUG
+```
